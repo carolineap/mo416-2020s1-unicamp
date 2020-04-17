@@ -1,0 +1,16 @@
+Image
+ipython
+ipythonblocks
+ipywidgets
+jupyter
+matplotlib
+networkx
+numpy
+opencv-python
+pandas
+pillow
+pytest
+qpsolvers
+quadprog
+scipy
+sortedcontainers
