@@ -1,12 +1,16 @@
-import enviroment
 import search
 from enum import Enum
+from collections import deque
 
+from utils import *
+
+#carol: inverti as direções para ficar mais fácil de visualizar na matrix, podemos deixar no modo tradicionar depois
 class Actions(Enum):
-	RIGHT = [0, 1]
-	LEFT = [0, -1]
-	UP = [1, 0]
-	DOWN = [-1, 0]
+	UP = (1, 0)
+	DOWN = (-1, 0)
+	RIGHT = (0, 1)
+	LEFT = (0, -1)
+
 
 class Problem(search.Problem):
 
@@ -19,14 +23,120 @@ class Problem(search.Problem):
 		state. The result would typically be a list, but if there are
 		many actions, consider yielding them one at a time in an
 		iterator, rather than building them all at once."""
-		return [action for action in Actions if self.maze.isValidPosition(self.result(state, action))]
+		return [action for action in Actions if self.maze.is_allowed(self.result(state, action))]
 
 	def result(self, state, action):
 		"""Return the state that results from executing the given
 		action in the given state. The action must be one of
 		self.actions(state)."""
-		return [x + y for x, y in zip(state, action.value)]
+		return tuple(map(sum, zip(state, action.value)))
 
-# if __name__ == "__main__":
-# 	maze, initial_state, goal_state = enviroment.getMazeTest()
-# 	problem = Problem(maze, initial_state, goal_state)
+	def check_food(self, state):
+		return self.maze.grid[state[0]][state[1]].food
+
+# carol: para modelar com custos diferentes de caminho, basta criar outra classe 
+# Problem que extende de search.Problem e dar override no método path_cost
+
+
+class Node:
+	"""A node in a search tree. Contains a pointer to the parent (the node
+	that this is a successor of) and to the actual state for this node. Note
+	that if a state is arrived at by two paths, then there are two nodes with
+	the same state. Also includes the action that got us to this state, and
+	the total path_cost (also known as g) to reach the node. Other functions
+	may add an f and h value; see best_first_graph_search and astar_search for
+	an explanation of how the f and h values are handled. You will not need to
+	subclass this class."""
+
+	def __init__(self, state, parent=None, action=None, path_cost=0):
+		"""Create a search tree Node, derived from a parent by an action."""
+		self.state = state
+		self.parent = parent
+		self.action = action
+		self.path_cost = path_cost
+		self.depth = 0
+		if parent:
+			self.depth = parent.depth + 1
+
+	def __repr__(self):
+		return "<Node {}>".format(self.state)
+
+	def __lt__(self, node):
+		return self.state < node.state
+
+	def expand(self, problem):
+		"""List the nodes reachable in one step from this node."""
+		return [self.child_node(problem, action)
+				for action in problem.actions(self.state)]
+
+	def child_node(self, problem, action):
+		"""[Figure 3.10]"""
+		next_state = problem.result(self.state, action)
+		next_node = Node(next_state, self, action, problem.path_cost(self.path_cost, self.state, action, next_state))
+		return next_node
+
+	def solution(self):
+		"""Return the sequence of actions to go from the root to this node."""
+		return [node.action for node in self.path()[1:]]
+
+	def path(self):
+		"""Return a list of nodes forming the path from the root to this node."""
+		node, path_back = self, []
+		while node:
+			path_back.append(node)
+			node = node.parent
+		return list(reversed(path_back))
+
+	# We want for a queue of nodes in breadth_first_graph_search or
+	# astar_search to have no duplicated states, so we treat nodes
+	# with the same state as equal. [Problem: this may not be what you
+	# want in other contexts.]
+
+	def __eq__(self, other):
+		return isinstance(other, Node) and self.state == other.state
+
+	def __hash__(self):
+		# We use the hash value of the state
+		# stored in the node instead of the node
+		# object itself to quickly search a node
+		# with the same state in a Hash Table
+		return hash(self.state)
+
+
+def depth_first_graph_search(problem):
+	expanded_nodes = 0
+	food_nodes = 0
+	frontier = [(Node(problem.initial))]
+
+	explored = set()
+	while frontier:
+		node = frontier.pop()
+		expanded_nodes += 1
+		food_nodes += problem.check_food(node.state)
+		if problem.goal_test(node.state):
+			return node, expanded_nodes, food_nodes
+		explored.add(node.state)
+		frontier.extend(child for child in node.expand(problem)
+						if child.state not in explored and child not in frontier)
+	return None, expanded_nodes, food_nodes
+
+
+def breadth_first_graph_search(problem):
+	expanded_nodes = 0
+	food_nodes = 0
+	node = Node(problem.initial)
+	if problem.goal_test(node.state):
+		return node
+	frontier = deque([node])
+	explored = set()
+	while frontier:
+		node = frontier.popleft()
+		expanded_nodes += 1
+		food_nodes += problem.check_food(node.state)
+		explored.add(node.state)
+		for child in node.expand(problem):
+			if child.state not in explored and child not in frontier:
+				if problem.goal_test(child.state):
+					return child, expanded_nodes, food_nodes
+				frontier.append(child)
+	return None, expanded_nodes, food_nodes
