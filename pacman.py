@@ -34,9 +34,14 @@ class Problem(search.Problem):
 	def check_food(self, state):
 		return state in self.maze.get_food()
 
+	def h(self, node):
+		"""h function is straight-line distance from a node's state to goal."""
+		x1, x2 = node.state
+		y1, y2 = self.goal
+		return abs(x2 - x1) + abs(y2 - y1)
+
 # carol: para modelar com custos diferentes de caminho, basta criar outra classe 
 # Problem que extende de search.Problem e dar override no método path_cost
-
 
 class Node:
 	"""A node in a search tree. Contains a pointer to the parent (the node
@@ -140,3 +145,37 @@ def breadth_first_graph_search(problem):
 					return child, expanded_nodes, food_nodes
 				frontier.append(child)
 	return None, expanded_nodes, food_nodes
+
+def best_first_graph_search(problem, f, display=False):
+	expanded_nodes = 0
+	food_nodes = 0
+	f = memoize(f, 'f')
+	node = Node(problem.initial)
+	frontier = PriorityQueue('min', f)
+	frontier.append(node)
+	explored = set()
+	while frontier:
+		node = frontier.pop()
+		if problem.goal_test(node.state):
+			if display:
+				print(len(explored), "paths have been expanded and", len(frontier), "paths remain in the frontier")
+			return node, expanded_nodes, food_nodes
+		expanded_nodes += 1
+		food_nodes += problem.check_food(node.state)  
+		explored.add(node.state)
+		for child in node.expand(problem):
+			if child.state not in explored and child not in frontier:
+				frontier.append(child)
+			elif child in frontier:
+				if f(child) < frontier[child]:
+					del frontier[child]
+					frontier.append(child)
+	return None, expanded_nodes, food_nodes
+
+def greedy_best_first_search(problem, h=None):
+	"""Greedy Best-first graph search is an informative searching algorithm with f(n) = h(n).
+	You need to specify the h function when you call best_first_search, or
+	else in your Problem subclass."""
+	h = memoize(h or problem.h, 'h')
+	node, expanded_nodes, food_nodes = best_first_graph_search(problem, lambda n: h(n))
+	return(node, expanded_nodes, food_nodes)
