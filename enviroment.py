@@ -2,9 +2,8 @@ import sys
 
 class Position:
 
-	def __init__(self, transversable, food, ghost):
-		self.transversable = transversable
-		self.ghost = ghost
+	def __init__(self, position, food=False):
+		self.position = position
 		self.food = food
 
 class Maze:
@@ -12,10 +11,20 @@ class Maze:
 	def __init__(self, num_rows, num_cols):
 		self.num_rows = num_rows
 		self.num_cols = num_cols
-		self.grid = [[None for j in range(num_cols)] for i in range(num_rows)]
+		self.transversable_positions = []
+		self.ghost_positions = []
+
+	def get_transversable(self):
+		return [tp.position for tp in self.transversable_positions]
+
+	def get_food(self):
+		return [tp.position for tp in self.transversable_positions if tp.food]
+
+	def get_ghost(self):
+		return [g.position for g in self.ghost_positions]
 
 	def is_allowed(self, position):
-		return position[0] >= 0 and position[0] < self.num_rows and position[1] >= 0 and position[1] < self.num_cols and self.grid[position[0]][position[1]].transversable
+		return position[0] >= 0 and position[0] < self.num_rows and position[1] >= 0 and position[1] < self.num_cols and position in self.get_transversable()
 
 	def get_int_grid(self, initial_position, goal_position):
 		#this method is necessary only for plots
@@ -27,11 +36,11 @@ class Maze:
 					row.append(0)
 				elif (i, j) == goal_position:
 					row.append(1)
-				elif self.grid[i][j].food:
+				elif (i, j) in self.get_transversable():
 					row.append(2)
-				elif self.grid[i][j].transversable:
+				elif (i, j) in self.get_food():
 					row.append(3)
-				elif self.grid[i][j].ghost:
+				elif (i, j) in self.get_ghost():
 					row.append(4)
 				else:
 					row.append(5)
@@ -61,30 +70,26 @@ class Maze:
 def read_maze(maze_file, num_rows, num_cols):
 	maze = Maze(num_rows, num_cols)
 	initial_position = goal_position = (-1, -1)
-
+		
 	k = 0
 	for i in range(0, maze.num_rows):
 		for j in range(0, maze.num_cols):
 			pos = maze_file[k]
 			
-			transversable = True
-			food = False
-			ghost = False
+			position = Position((i, j))
 			
-			if pos == '|':
-				transversable = False
-			elif pos == '.':
-				food = True
-			elif pos == 'o':
-				ghost = True
-				transversable = False
-			elif pos == 'p':
-				initial_position = (i, j)
-			elif pos == 'g':
-				goal_position = (i, j)
-			
-			maze.grid[i][j] = Position(transversable, food, ghost)
+			if pos == 'o':
+				maze.ghost_positions.append(position)
+			elif pos != '|':
+				if pos == '.':
+					position.food = True
+				elif pos == 'p':
+					initial_position = (i, j)
+				elif pos == 'g':
+					goal_position = (i,j)
 
+				maze.transversable_positions.append(position)
+			
 			k += 1
 			
 	return maze, initial_position, goal_position

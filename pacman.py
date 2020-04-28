@@ -32,7 +32,7 @@ class Problem(search.Problem):
 		return tuple(map(sum, zip(state, action.value)))
 
 	def check_food(self, state):
-		return self.maze.grid[state[0]][state[1]].food
+		return state in self.maze.get_food()
 
 # carol: para modelar com custos diferentes de caminho, basta criar outra classe 
 # Problem que extende de search.Problem e dar override no método path_cost
