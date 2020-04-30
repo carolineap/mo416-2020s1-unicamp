@@ -1,0 +1,14 @@
+Tamanhos Mazes (linhas x colunas)
+
+TinyMaze01	30 x 28
+TinyMaze02	30 x 28
+TinyMaze03	30 x 28
+
+SmallMaze01	30 x 84
+SmallMaze02	30 x 56
+
+MediumMaze01	60 x 56
+MediumMaze02	60 x 112
+
+BigMaze01	60 x 140
+BigMaze02	90 x 140

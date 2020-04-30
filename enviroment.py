@@ -91,10 +91,10 @@ def read_maze(maze_file, num_rows, num_cols):
 				maze.transversable_positions.append(position)
 			
 			k += 1
-			
+		k+=1
 	return maze, initial_position, goal_position
 
 def getMazeTest():
 	maze_file = open("maze-test.txt","r").read()
-	return read_maze(maze_file, num_rows = 28, num_cols = 29)
+	return read_maze(maze_file, num_rows = 28, num_cols = 28)
 
