@@ -59,8 +59,14 @@ class Maze:
 					row.append(1)
 				elif (i, j) in path:
 					row.append(2)
-				else:
+				elif (i, j) in self.get_transversable() and not (i, j) in self.get_food():
 					row.append(3)
+				elif (i, j) in self.get_food():
+					row.append(4)
+				elif (i, j) in self.get_ghost():
+					row.append(5)
+				else:
+					row.append(6)
 				
 				grid.append(row)
 
