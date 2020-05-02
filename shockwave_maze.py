@@ -88,11 +88,11 @@ class ShockWaveMaze(Maze):
 		return tuple(map(sum, zip(a, b)))
 	
 	def set_shockwave(self, goal_position):
-		grid = np.empty([self.num_cols, self.num_rows], dtype=int)
+		grid = np.empty([self.num_rows, self.num_cols], dtype=int)
 		grid.fill(-1) 
 		grid[goal_position[0]][goal_position[1]] = 0
 
-		queue = [goal_position]		
+		queue = [goal_position]
 		while len(queue) > 0:
 			i, j = queue[0]
 			for action in Actions:
@@ -115,7 +115,6 @@ def read_maze(maze_file, num_rows, num_cols):
 	for i in range(0, maze.num_rows):
 		for j in range(0, maze.num_cols):
 			pos = maze_file[k]
-			
 			position = Position((i, j))
 			
 			if pos == 'o':
@@ -132,11 +131,18 @@ def read_maze(maze_file, num_rows, num_cols):
 			
 			k += 1
 		k+=1
+	rng = np.random.default_rng()
+	while initial_position == (-1, -1):
+		pos = rng.integers(len(maze.transversable_positions))
+		initial_position = maze.transversable_positions[pos].position
+	
+	while goal_position == (-1, -1) and goal_position != initial_position:
+		pos = rng.integers(len(maze.transversable_positions))
+		goal_position = maze.transversable_positions[pos].position
 	
 	maze.set_shockwave(goal_position)
 	return maze, initial_position, goal_position
 
-def getMazeTest():
-	maze_file = open("maze-test.txt","r").read()
-	return read_maze(maze_file, num_rows = 28, num_cols = 28)
-
+def getMazeTest(maze_arq, num_rows, num_cols):
+	maze_file = open(maze_arq,"r").read()
+	return read_maze(maze_file, num_rows, num_cols)
