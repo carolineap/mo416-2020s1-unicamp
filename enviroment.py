@@ -32,39 +32,43 @@ class Maze:
 		for i in range(0, self.num_rows):
 			row = []
 			for j in range(0, self.num_cols):
-				if (i, j) == initial_position:
+				if (i, j) in self.get_transversable():
 					row.append(0)
-				elif (i, j) == goal_position:
-					row.append(1)
-				elif (i, j) in self.get_transversable() and not (i, j) in self.get_food():
-					row.append(2)
-				elif (i, j) in self.get_food():
-					row.append(3)
 				elif (i, j) in self.get_ghost():
-					row.append(4)
+					row.append(1)
 				else:
-					row.append(5)
-				grid.append(row)
-		return grid
+					row.append(2)
+			grid.append(row)
+
+		food_x = []
+		food_y = []
+
+		for i, j in self.get_food():
+			food_x.append(i)
+			food_y.append(j)
+
+		return grid, food_x, food_y 
 
 	def get_final_grid(self, initial_position, goal_position, path):
 		#this method is necessary only for plots
 		grid = []
+		food_x = []
+		food_y = []
+
 		for i in range(0, self.num_rows):
 			row = []
 			for j in range(0, self.num_cols):
-				if (i, j) == initial_position:
+				if (i, j) in path:
 					row.append(0)
-				elif (i, j) == goal_position:
-					row.append(1)
-				elif (i, j) in path:
-					row.append(2)
+					if (i, j) in self.get_food():
+						food_x.append(i)
+						food_y.append(j)
 				else:
-					row.append(3)
+					row.append(1)
 				
-				grid.append(row)
+			grid.append(row)
 
-		return grid
+		return grid, food_x, food_y
 
 
 def read_maze(maze_file, num_rows, num_cols):
@@ -72,7 +76,7 @@ def read_maze(maze_file, num_rows, num_cols):
 	initial_position = goal_position = (-1, -1)
 		
 	k = 0
-	for i in range(0, maze.num_rows):
+	for i in range(maze.num_rows - 1, -1, -1):
 		for j in range(0, maze.num_cols):
 			pos = maze_file[k]
 			position = Position((i, j))
@@ -91,6 +95,7 @@ def read_maze(maze_file, num_rows, num_cols):
 			
 			k += 1
 		k+=1
+
 	return maze, initial_position, goal_position
 
 def getMazeTest(maze_arq, num_rows, num_cols):

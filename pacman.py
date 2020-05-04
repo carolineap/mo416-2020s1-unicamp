@@ -4,7 +4,7 @@ from collections import deque
 
 from utils import *
 
-#carol: inverti as direções para ficar mais fácil de visualizar na matrix, podemos deixar no modo tradicionar depois
+#directions are different from the usual just for the plots make sense
 class Actions(Enum):
 	UP = (1, 0)
 	DOWN = (-1, 0)
@@ -29,15 +29,27 @@ class Problem(search.Problem):
 		"""Return the state that results from executing the given
 		action in the given state. The action must be one of
 		self.actions(state)."""
-		return tuple(map(sum, zip(state, action.value)))
+		position = tuple(map(sum, zip(state, action.value)))
+		
+		if position[0] < 0 or position[0] >= self.maze.num_rows:
+			x = position[0]%self.maze.num_rows
+		else:
+			x = position[0]
+
+		if position[1] < 0 or position[1] >= self.maze.num_cols:
+			y = position[1]%self.maze.num_cols
+		else:
+			y = position[1]
+
+		return (x, y)
 
 	def check_food(self, state):
 		return state in self.maze.get_food()
 
 	def h(self, node):
 		"""h function is straight-line distance from a node's state to goal."""
-		x1, x2 = node.state
-		y1, y2 = self.goal
+		x1, y1 = node.state
+		x2, y2 = self.goal
 		return abs(x2 - x1) + abs(y2 - y1)
 
 # carol: para modelar com custos diferentes de caminho, basta criar outra classe 
