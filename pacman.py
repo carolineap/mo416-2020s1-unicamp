@@ -36,8 +36,8 @@ class Problem(search.Problem):
 
 	def h(self, node):
 		"""h function is straight-line distance from a node's state to goal."""
-		x1, x2 = node.state
-		y1, y2 = self.goal
+		x1, y1 = node.state
+		x2, y2 = self.goal
 		return abs(x2 - x1) + abs(y2 - y1)
 
 # carol: para modelar com custos diferentes de caminho, basta criar outra classe 
