@@ -1,6 +1,6 @@
 import sys
 import numpy as np
-from actions import Actions
+from src.actions import Actions
 
 
 class Position:
@@ -95,7 +95,7 @@ class ShockWaveMaze(Maze):
 		self.shockwave_grid = []
 	
 	def set_shockwave(self, goal_position):
-		def elem_wise_sum( a, b):
+		def elem_wise_sum(a, b):
 			return tuple(map(sum, zip(a, b)))
 		
 		# The goal position must be a valid position, if not
@@ -114,6 +114,9 @@ class ShockWaveMaze(Maze):
 			i, j = queue[0]
 			for action in Actions:
 				neighbor = elem_wise_sum(queue[0], action.value)
+				
+				# Tunnel addition
+				neighbor = neighbor[0] % self.num_rows, neighbor[1] % self.num_cols
 
 				if (self.is_allowed(neighbor) and grid[neighbor[0]][neighbor[1]] == -1):
 					queue.append(neighbor)
@@ -151,11 +154,11 @@ def read_maze(maze_file, num_rows, num_cols, maze_class=Maze):
 	
 	# If the Maze is the Shockwave Maze, we must set the shockwave grid
 	if maze_class == ShockWaveMaze:
-		maze.set_shockwave(initial_position)
+		maze.set_shockwave(goal_position)
 
 	return maze, initial_position, goal_position
 
-def getMazeTest(maze_arq, num_rows, num_cols):
+def getMazeTest(maze_arq, num_rows, num_cols, maze_class=Maze):
 	maze_file = open(maze_arq, "r").read()
-	return read_maze(maze_file, num_rows, num_cols)
+	return read_maze(maze_file, num_rows, num_cols, maze_class)
 

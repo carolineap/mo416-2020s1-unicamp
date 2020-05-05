@@ -1,12 +1,16 @@
-import search
 from collections import deque
 import math
 
-from utils import *
-from actions import Actions
-from pacman_node import Node
+# AIMA Libs
+from lib.utils import memoize, PriorityQueue
+import lib.search
 
-class PacmanProblem(search.Problem):
+# Pacman files
+from src.actions import Actions
+from src.pacman_node import Node
+
+
+class PacmanProblem(lib.search.Problem):
 
 	def __init__(self, maze, initial_state, goal_state, food_tile_cost=1, empty_tile_cost=1, ghost_proximity_range=10, ghost_proximity_cost=20):
 		super().__init__(initial_state, goal_state)
@@ -104,9 +108,6 @@ class PacmanProblem(search.Problem):
 			return c + self.food_tile_cost
 		else:
 			return c + self.empty_tile_cost
-
-# carol: para modelar com custos diferentes de caminho, basta criar outra classe 
-# Problem que extende de search.Problem e dar override no método path_cost
 
 
 def depth_first_graph_search(problem):
