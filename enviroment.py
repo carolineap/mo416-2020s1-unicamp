@@ -37,15 +37,15 @@ class Maze:
 			row = []
 			for j in range(0, self.num_cols):
 				if (i, j) == initial_position:
-					row.append(3)
-				elif (i, j) == goal_position:
-					row.append(4)
-				elif (i, j) in self.get_transversable():
 					row.append(0)
-				elif (i, j) in self.get_ghost():
+				elif (i, j) == goal_position:
 					row.append(1)
-				else:
+				elif (i, j) in self.get_transversable():
 					row.append(2)
+				elif (i, j) in self.get_ghost():
+					row.append(3)
+				else:
+					row.append(4)
 			grid.append(row)
 
 		food_x = []
@@ -67,16 +67,16 @@ class Maze:
 			row = []
 			for j in range(0, self.num_cols):
 				if (i, j) == initial_position:
-					row.append(2)
+					row.append(1)
 				elif (i, j) == goal_position:
-					row.append(3)
+					row.append(2)
 				elif (i, j) in path:
-					row.append(0)
+					row.append(3)
 					if (i, j) in self.get_food():
 						food_x.append(i)
 						food_y.append(j)
 				else:
-					row.append(1)
+					row.append(4)
 				
 			grid.append(row)
 
