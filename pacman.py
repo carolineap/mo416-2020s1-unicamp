@@ -1,6 +1,7 @@
 import search
 from enum import Enum
 from collections import deque
+import math
 
 from utils import *
 
@@ -14,9 +15,11 @@ class Actions(Enum):
 
 class Problem(search.Problem):
 
-	def __init__(self, maze, initial_state, goal_state):
+	def __init__(self, maze, initial_state, goal_state, food_tile_cost=1, empty_tile_cost=1):
 		self.maze = maze
 		super().__init__(initial_state, goal_state)
+		self.food_tile_cost = food_tile_cost
+		self.empty_tile_cost = empty_tile_cost
 
 	def actions(self, state):
 		"""Return the actions that can be executed in the given
@@ -39,6 +42,17 @@ class Problem(search.Problem):
 		x1, x2 = node.state
 		y1, y2 = self.goal
 		return abs(x2 - x1) + abs(y2 - y1)
+
+	def path_cost(self, c, state1, action, state2):
+		"""Return the cost of a solution path that arrives at state2 from
+		state1 via action, assuming cost c to get up to state1. If the problem
+		is such that the path doesn't matter, this function will only look at
+		state2. If the path does matter, it will consider c and maybe state1
+		and action. The default method costs 1 for every step in the path."""
+		if self.maze.is_food(state2):
+			return c + self.food_tile_cost
+		else:
+			return c + self.empty_tile_cost
 
 # carol: para modelar com custos diferentes de caminho, basta criar outra classe 
 # Problem que extende de search.Problem e dar override no método path_cost
@@ -78,6 +92,7 @@ class Node:
 		"""[Figure 3.10]"""
 		next_state = problem.result(self.state, action)
 		next_node = Node(next_state, self, action, problem.path_cost(self.path_cost, self.state, action, next_state))
+		problem.path_cost(self.path_cost, self.state, action, next_state)
 		return next_node
 
 	def solution(self):
@@ -179,3 +194,10 @@ def greedy_best_first_search(problem, h=None):
 	h = memoize(h or problem.h, 'h')
 	node, expanded_nodes, food_nodes = best_first_graph_search(problem, lambda n: h(n))
 	return(node, expanded_nodes, food_nodes)
+
+def a_star_best_first_search(problem, h=None):
+	"""A* search is an informative searching algorithm with f(n) = h(n) + g(n).
+	You need to specify the h function when you call best_first_search, or else in your Problem subclass"""
+	h = memoize(h or problem.h, 'h')
+	node, expanded_nodes, food_nodes = best_first_graph_search(problem, lambda n: h(n) + n.path_cost)
+	return (node, expanded_nodes, food_nodes)

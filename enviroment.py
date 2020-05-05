@@ -19,6 +19,10 @@ class Maze:
 
 	def get_food(self):
 		return [tp.position for tp in self.transversable_positions if tp.food]
+	
+	def is_food(self, position):
+		ret = position in self.get_food()
+		return ret
 
 	def get_ghost(self):
 		return [g.position for g in self.ghost_positions]
