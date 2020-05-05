@@ -19,7 +19,7 @@ class Maze:
 
 	def get_food(self):
 		return [tp.position for tp in self.transversable_positions if tp.food]
-	
+
 	def is_food(self, position):
 		ret = position in self.get_food()
 		return ret
@@ -115,4 +115,3 @@ def getMazeTest(maze_arq, num_rows, num_cols):
 	return read_maze(maze_file, num_rows, num_cols)
 	#read_maze(maze_file, num_rows = 30, num_cols = 28)
 #getMazeTest()
-
