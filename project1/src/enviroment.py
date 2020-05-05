@@ -1,10 +1,14 @@
 import sys
+import numpy as np
+from actions import Actions
+
 
 class Position:
 
 	def __init__(self, position, food=False):
 		self.position = position
 		self.food = food
+
 
 class Maze:
 
@@ -13,6 +17,8 @@ class Maze:
 		self.num_cols = num_cols
 		self.transversable_positions = []
 		self.ghost_positions = []
+
+		self.shockwave_grid = []
 
 	def get_transversable(self):
 		return [tp.position for tp in self.transversable_positions]
@@ -83,8 +89,43 @@ class Maze:
 		return grid, food_x, food_y
 
 
-def read_maze(maze_file, num_rows, num_cols):
-	maze = Maze(num_rows, num_cols)
+class ShockWaveMaze(Maze):
+	def __init__(self, num_rows, num_cols):
+		super().__init__(num_rows, num_cols)
+		self.shockwave_grid = []
+	
+	def set_shockwave(self, goal_position):
+		def elem_wise_sum( a, b):
+			return tuple(map(sum, zip(a, b)))
+		
+		# The goal position must be a valid position, if not
+		# generate a 0s grid
+		if goal_position == (-1, -1):
+			grid = np.zeros([self.num_rows, self.num_cols], dtype=int)
+			self.shockwave_grid = grid
+			return
+
+		grid = np.empty([self.num_rows, self.num_cols], dtype=int)
+		grid.fill(-1) 
+		grid[goal_position[0]][goal_position[1]] = 0
+
+		queue = [goal_position]
+		while len(queue) > 0:
+			i, j = queue[0]
+			for action in Actions:
+				neighbor = elem_wise_sum(queue[0], action.value)
+
+				if (self.is_allowed(neighbor) and grid[neighbor[0]][neighbor[1]] == -1):
+					queue.append(neighbor)
+					grid[neighbor[0]][neighbor[1]] = grid[i][j] + 1
+		
+			queue.pop(0)
+
+		self.shockwave_grid = grid
+
+
+def read_maze(maze_file, num_rows, num_cols, maze_class=Maze):
+	maze = maze_class(num_rows, num_cols)
 	initial_position = goal_position = (-1, -1)
 		
 	k = 0
@@ -107,11 +148,14 @@ def read_maze(maze_file, num_rows, num_cols):
 			
 			k += 1
 		k+=1
+	
+	# If the Maze is the Shockwave Maze, we must set the shockwave grid
+	if maze_class == ShockWaveMaze:
+		maze.set_shockwave(initial_position)
 
 	return maze, initial_position, goal_position
 
 def getMazeTest(maze_arq, num_rows, num_cols):
-	maze_file = open(maze_arq,"r").read()
+	maze_file = open(maze_arq, "r").read()
 	return read_maze(maze_file, num_rows, num_cols)
-	#read_maze(maze_file, num_rows = 30, num_cols = 28)
-#getMazeTest()
+
