@@ -32,7 +32,11 @@ class Maze:
 		for i in range(0, self.num_rows):
 			row = []
 			for j in range(0, self.num_cols):
-				if (i, j) in self.get_transversable():
+				if (i, j) == initial_position:
+					row.append(3)
+				elif (i, j) == goal_position:
+					row.append(4)
+				elif (i, j) in self.get_transversable():
 					row.append(0)
 				elif (i, j) in self.get_ghost():
 					row.append(1)
@@ -58,7 +62,11 @@ class Maze:
 		for i in range(0, self.num_rows):
 			row = []
 			for j in range(0, self.num_cols):
-				if (i, j) in path:
+				if (i, j) == initial_position:
+					row.append(2)
+				elif (i, j) == goal_position:
+					row.append(3)
+				elif (i, j) in path:
 					row.append(0)
 					if (i, j) in self.get_food():
 						food_x.append(i)
