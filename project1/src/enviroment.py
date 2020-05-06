@@ -58,8 +58,9 @@ class Maze:
 		food_y = []
 
 		for i, j in self.get_food():
-			food_x.append(i)
-			food_y.append(j)
+			if ((i, j) != initial_position and (i, j) != goal_position):
+				food_x.append(i)
+				food_y.append(j)
 
 		return grid, food_x, food_y 
 
