@@ -114,27 +114,31 @@ def depth_first_graph_search(problem):
 	expanded_nodes = 0
 	food_nodes = 0
 	frontier = [(Node(problem.initial))]
-
+	tam = len(frontier)
+	
 	explored = set()
 	while frontier:
 		node = frontier.pop()
 		expanded_nodes += 1
 		food_nodes += problem.check_food(node.state)
 		if problem.goal_test(node.state):
-			return node, expanded_nodes, food_nodes
+			return node, expanded_nodes, food_nodes, tam
 		explored.add(node.state)
 		frontier.extend(child for child in node.expand(problem)
 						if child.state not in explored and child not in frontier)
-	return None, expanded_nodes, food_nodes
-
+		tam += len(node.expand(problem))
+	return None, expanded_nodes, food_nodes, tam
 
 def breadth_first_graph_search(problem):
 	expanded_nodes = 0
 	food_nodes = 0
 	node = Node(problem.initial)
+	tam = 1
+	
 	if problem.goal_test(node.state):
 		return node
 	frontier = deque([node])
+	
 	explored = set()
 	while frontier:
 		node = frontier.popleft()
@@ -143,10 +147,11 @@ def breadth_first_graph_search(problem):
 		explored.add(node.state)
 		for child in node.expand(problem):
 			if child.state not in explored and child not in frontier:
+				tam += 1
 				if problem.goal_test(child.state):
-					return child, expanded_nodes, food_nodes
+					return child, expanded_nodes, food_nodes, tam
 				frontier.append(child)
-	return None, expanded_nodes, food_nodes
+	return None, expanded_nodes, food_nodes, tam
 
 def best_first_graph_search(problem, f, display=False):
 	expanded_nodes = 0
@@ -156,35 +161,38 @@ def best_first_graph_search(problem, f, display=False):
 	frontier = PriorityQueue('min', f)
 	frontier.append(node)
 	explored = set()
+	tam = 1
+	
 	while frontier:
 		node = frontier.pop()
 		if problem.goal_test(node.state):
 			if display:
 				print(len(explored), "paths have been expanded and", len(frontier), "paths remain in the frontier")
-			return node, expanded_nodes, food_nodes
+			return node, expanded_nodes, food_nodes, tam
 		expanded_nodes += 1
 		food_nodes += problem.check_food(node.state)  
 		explored.add(node.state)
 		for child in node.expand(problem):
 			if child.state not in explored and child not in frontier:
 				frontier.append(child)
+				tam += 1
 			elif child in frontier:
 				if f(child) < frontier[child]:
 					del frontier[child]
 					frontier.append(child)
-	return None, expanded_nodes, food_nodes
+	return None, expanded_nodes, food_nodes, tam
 
 def greedy_best_first_search(problem, h=None):
 	"""Greedy Best-first graph search is an informative searching algorithm with f(n) = h(n).
 	You need to specify the h function when you call best_first_search, or
 	else in your Problem subclass."""
 	h = memoize(h or problem.h, 'h')
-	node, expanded_nodes, food_nodes = best_first_graph_search(problem, lambda n: h(n))
-	return(node, expanded_nodes, food_nodes)
+	node, expanded_nodes, food_nodes, tam = best_first_graph_search(problem, lambda n: h(n))
+	return(node, expanded_nodes, food_nodes, tam)
 
 def a_star_best_first_search(problem, h=None):
 	"""A* search is an informative searching algorithm with f(n) = h(n) + g(n).
 	You need to specify the h function when you call best_first_search, or else in your Problem subclass"""
 	h = memoize(h or problem.h, 'h')
-	node, expanded_nodes, food_nodes = best_first_graph_search(problem, lambda n: h(n) + n.path_cost)
-	return (node, expanded_nodes, food_nodes)
+	node, expanded_nodes, food_nodes, tam = best_first_graph_search(problem, lambda n: h(n) + n.path_cost)
+	return (node, expanded_nodes, food_nodes, tam)
