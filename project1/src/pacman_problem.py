@@ -126,7 +126,9 @@ def depth_first_graph_search(problem):
 		explored.add(node.state)
 		frontier.extend(child for child in node.expand(problem)
 						if child.state not in explored and child not in frontier)
-		tam += len(node.expand(problem))
+		new_tam = len(frontier)
+		if (new_tam > tam):
+			tam = new_tam
 	return None, expanded_nodes, food_nodes, tam
 
 def breadth_first_graph_search(problem):
@@ -147,10 +149,13 @@ def breadth_first_graph_search(problem):
 		explored.add(node.state)
 		for child in node.expand(problem):
 			if child.state not in explored and child not in frontier:
-				tam += 1
+				#tam += 1
 				if problem.goal_test(child.state):
 					return child, expanded_nodes, food_nodes, tam
 				frontier.append(child)
+		new_tam = len(frontier)
+		if (new_tam > tam):
+			tam = new_tam
 	return None, expanded_nodes, food_nodes, tam
 
 def best_first_graph_search(problem, f, display=False):
@@ -175,11 +180,14 @@ def best_first_graph_search(problem, f, display=False):
 		for child in node.expand(problem):
 			if child.state not in explored and child not in frontier:
 				frontier.append(child)
-				tam += 1
+				#tam += 1
 			elif child in frontier:
 				if f(child) < frontier[child]:
 					del frontier[child]
 					frontier.append(child)
+			new_tam = len(frontier)
+			if (new_tam > tam):
+				tam = new_tam
 	return None, expanded_nodes, food_nodes, tam
 
 def greedy_best_first_search(problem, h=None):
