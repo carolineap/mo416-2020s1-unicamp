@@ -12,7 +12,7 @@ from src.pacman_node import Node
 
 class PacmanProblem(lib.search.Problem):
 
-	def __init__(self, maze, initial_state, goal_state, food_tile_cost=1, empty_tile_cost=1, ghost_proximity_range=10, ghost_proximity_cost=20):
+	def __init__(self, maze, initial_state, goal_state, food_tile_cost=1, empty_tile_cost=1000, ghost_proximity_range=10, ghost_proximity_cost=20):
 		super().__init__(initial_state, goal_state)
 
 		self.maze = maze
