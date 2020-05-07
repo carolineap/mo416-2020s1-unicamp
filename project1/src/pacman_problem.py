@@ -1,25 +1,29 @@
-import search
-from enum import Enum
 from collections import deque
 import math
 
-from utils import *
+# AIMA Libs
+from lib.utils import memoize, PriorityQueue
+import lib.search
 
-#directions are different from the usual just for the plots make sense
-class Actions(Enum):
-	UP = (1, 0)
-	DOWN = (-1, 0)
-	RIGHT = (0, 1)
-	LEFT = (0, -1)
+# Pacman files
+from src.actions import Actions
+from src.pacman_node import Node
 
 
-class Problem(search.Problem):
+class PacmanProblem(lib.search.Problem):
 
-	def __init__(self, maze, initial_state, goal_state, food_tile_cost=1, empty_tile_cost=1):
-		self.maze = maze
+	def __init__(self, maze, initial_state, goal_state, food_tile_cost=1, empty_tile_cost=1, ghost_proximity_range=10, ghost_proximity_cost=20):
 		super().__init__(initial_state, goal_state)
+
+		self.maze = maze
+
+		# Variables for the path cost
 		self.food_tile_cost = food_tile_cost
 		self.empty_tile_cost = empty_tile_cost
+
+		# Variables for the ghost avoidance heuristic
+		self.ghost_proximity_range = ghost_proximity_range
+		self.ghost_proximity_cost = ghost_proximity_cost
 
 	def actions(self, state):
 		"""Return the actions that can be executed in the given
@@ -54,6 +58,45 @@ class Problem(search.Problem):
 		x1, y1 = node.state
 		x2, y2 = self.goal
 		return abs(x2 - x1) + abs(y2 - y1)
+	
+	def h_euclidean(self, node):
+		x1, y1 = node.state
+		x2, y2 = self.goal
+
+		return math.sqrt(((x2 - x1)**2) + ((y2 - y1)**2))
+	
+	def h_ghost_avoidance_euclidean(self, node):
+		goal_dist = self.h_euclidean(node)
+
+		x1, y1 = node.state
+		ghost_proximity = 0
+
+		for ghost in self.maze.get_ghost():
+			xg, yg = ghost
+			ghost_dist = math.sqrt(((xg - x1)**2) + ((yg - y1)**2))
+			if ghost_dist <= self.ghost_proximity_range:
+				ghost_proximity += self.ghost_proximity_cost/ghost_dist
+
+		return goal_dist + ghost_proximity
+	
+	def h_ghost_avoidance_manhattam(self, node):
+		goal_dist = self.h(node)
+
+		x1, y1 = node.state
+		ghost_proximity = 0
+
+		for ghost in self.maze.get_ghost():
+			xg, yg = ghost
+			ghost_dist = math.sqrt(((xg - x1)**2) + ((yg - y1)**2))
+			if ghost_dist <= self.ghost_proximity_range:
+				ghost_proximity += self.ghost_proximity_cost/ghost_dist
+
+		return goal_dist + ghost_proximity
+	
+	def h_shockwave(self, node):
+		"""h function is the shockwave distance to the goal."""
+		x1, y1 = node.state
+		return self.maze.shockwave_grid[x1][y1]
 
 	def path_cost(self, c, state1, action, state2):
 		"""Return the cost of a solution path that arrives at state2 from
@@ -66,100 +109,38 @@ class Problem(search.Problem):
 		else:
 			return c + self.empty_tile_cost
 
-# carol: para modelar com custos diferentes de caminho, basta criar outra classe 
-# Problem que extende de search.Problem e dar override no método path_cost
-
-class Node:
-	"""A node in a search tree. Contains a pointer to the parent (the node
-	that this is a successor of) and to the actual state for this node. Note
-	that if a state is arrived at by two paths, then there are two nodes with
-	the same state. Also includes the action that got us to this state, and
-	the total path_cost (also known as g) to reach the node. Other functions
-	may add an f and h value; see best_first_graph_search and astar_search for
-	an explanation of how the f and h values are handled. You will not need to
-	subclass this class."""
-
-	def __init__(self, state, parent=None, action=None, path_cost=0):
-		"""Create a search tree Node, derived from a parent by an action."""
-		self.state = state
-		self.parent = parent
-		self.action = action
-		self.path_cost = path_cost
-		self.depth = 0
-		if parent:
-			self.depth = parent.depth + 1
-
-	def __repr__(self):
-		return "<Node {}>".format(self.state)
-
-	def __lt__(self, node):
-		return self.state < node.state
-
-	def expand(self, problem):
-		"""List the nodes reachable in one step from this node."""
-		return [self.child_node(problem, action)
-				for action in problem.actions(self.state)]
-
-	def child_node(self, problem, action):
-		"""[Figure 3.10]"""
-		next_state = problem.result(self.state, action)
-		next_node = Node(next_state, self, action, problem.path_cost(self.path_cost, self.state, action, next_state))
-		problem.path_cost(self.path_cost, self.state, action, next_state)
-		return next_node
-
-	def solution(self):
-		"""Return the sequence of actions to go from the root to this node."""
-		return [node.action for node in self.path()[1:]]
-
-	def path(self):
-		"""Return a list of nodes forming the path from the root to this node."""
-		node, path_back = self, []
-		while node:
-			path_back.append(node)
-			node = node.parent
-		return list(reversed(path_back))
-
-	# We want for a queue of nodes in breadth_first_graph_search or
-	# astar_search to have no duplicated states, so we treat nodes
-	# with the same state as equal. [Problem: this may not be what you
-	# want in other contexts.]
-
-	def __eq__(self, other):
-		return isinstance(other, Node) and self.state == other.state
-
-	def __hash__(self):
-		# We use the hash value of the state
-		# stored in the node instead of the node
-		# object itself to quickly search a node
-		# with the same state in a Hash Table
-		return hash(self.state)
-
 
 def depth_first_graph_search(problem):
 	expanded_nodes = 0
 	food_nodes = 0
 	frontier = [(Node(problem.initial))]
-
+	tam = len(frontier)
+	
 	explored = set()
 	while frontier:
 		node = frontier.pop()
 		expanded_nodes += 1
 		food_nodes += problem.check_food(node.state)
 		if problem.goal_test(node.state):
-			return node, expanded_nodes, food_nodes
+			return node, expanded_nodes, food_nodes, tam
 		explored.add(node.state)
 		frontier.extend(child for child in node.expand(problem)
 						if child.state not in explored and child not in frontier)
-	return None, expanded_nodes, food_nodes
-
+		new_tam = len(frontier)
+		if (new_tam > tam):
+			tam = new_tam
+	return None, expanded_nodes, food_nodes, tam
 
 def breadth_first_graph_search(problem):
 	expanded_nodes = 0
 	food_nodes = 0
 	node = Node(problem.initial)
+	tam = 1
+	
 	if problem.goal_test(node.state):
 		return node
 	frontier = deque([node])
+	
 	explored = set()
 	while frontier:
 		node = frontier.popleft()
@@ -168,10 +149,14 @@ def breadth_first_graph_search(problem):
 		explored.add(node.state)
 		for child in node.expand(problem):
 			if child.state not in explored and child not in frontier:
+				#tam += 1
 				if problem.goal_test(child.state):
-					return child, expanded_nodes, food_nodes
+					return child, expanded_nodes, food_nodes, tam
 				frontier.append(child)
-	return None, expanded_nodes, food_nodes
+		new_tam = len(frontier)
+		if (new_tam > tam):
+			tam = new_tam
+	return None, expanded_nodes, food_nodes, tam
 
 def best_first_graph_search(problem, f, display=False):
 	expanded_nodes = 0
@@ -181,35 +166,41 @@ def best_first_graph_search(problem, f, display=False):
 	frontier = PriorityQueue('min', f)
 	frontier.append(node)
 	explored = set()
+	tam = 1
+	
 	while frontier:
 		node = frontier.pop()
 		if problem.goal_test(node.state):
 			if display:
 				print(len(explored), "paths have been expanded and", len(frontier), "paths remain in the frontier")
-			return node, expanded_nodes, food_nodes
+			return node, expanded_nodes, food_nodes, tam
 		expanded_nodes += 1
 		food_nodes += problem.check_food(node.state)  
 		explored.add(node.state)
 		for child in node.expand(problem):
 			if child.state not in explored and child not in frontier:
 				frontier.append(child)
+				#tam += 1
 			elif child in frontier:
 				if f(child) < frontier[child]:
 					del frontier[child]
 					frontier.append(child)
-	return None, expanded_nodes, food_nodes
+			new_tam = len(frontier)
+			if (new_tam > tam):
+				tam = new_tam
+	return None, expanded_nodes, food_nodes, tam
 
 def greedy_best_first_search(problem, h=None):
 	"""Greedy Best-first graph search is an informative searching algorithm with f(n) = h(n).
 	You need to specify the h function when you call best_first_search, or
 	else in your Problem subclass."""
 	h = memoize(h or problem.h, 'h')
-	node, expanded_nodes, food_nodes = best_first_graph_search(problem, lambda n: h(n))
-	return(node, expanded_nodes, food_nodes)
+	node, expanded_nodes, food_nodes, tam = best_first_graph_search(problem, lambda n: h(n))
+	return(node, expanded_nodes, food_nodes, tam)
 
 def a_star_best_first_search(problem, h=None):
 	"""A* search is an informative searching algorithm with f(n) = h(n) + g(n).
 	You need to specify the h function when you call best_first_search, or else in your Problem subclass"""
 	h = memoize(h or problem.h, 'h')
-	node, expanded_nodes, food_nodes = best_first_graph_search(problem, lambda n: h(n) + n.path_cost)
-	return (node, expanded_nodes, food_nodes)
+	node, expanded_nodes, food_nodes, tam = best_first_graph_search(problem, lambda n: h(n) + n.path_cost)
+	return (node, expanded_nodes, food_nodes, tam)
