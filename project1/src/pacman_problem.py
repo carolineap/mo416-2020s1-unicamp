@@ -1,6 +1,8 @@
 from collections import deque
 import math
+import sys
 import random
+import numpy as np
 
 # AIMA Libs
 from lib.utils import memoize, PriorityQueue
@@ -121,6 +123,7 @@ def depth_first_graph_search(problem):
 			tam = new_tam
 	return None, expanded_nodes, food_nodes, tam
 
+
 def breadth_first_graph_search(problem):
 	expanded_nodes = 0
 	food_nodes = 0
@@ -147,6 +150,7 @@ def breadth_first_graph_search(problem):
 		if (new_tam > tam):
 			tam = new_tam
 	return None, expanded_nodes, food_nodes, tam
+
 
 def best_first_graph_search(problem, f, display=False):
 	expanded_nodes = 0
@@ -223,6 +227,7 @@ def hill_climbing_search(problem, h=None, display=False):
 		print("Goal was not found, ", len(explored), " paths have been expanded")
 	return node, expanded_nodes, food_nodes, tam
 
+
 def greedy_best_first_search(problem, h=None):
 	"""Greedy Best-first graph search is an informative searching algorithm with f(n) = h(n).
 	You need to specify the h function when you call best_first_search, or
@@ -231,9 +236,79 @@ def greedy_best_first_search(problem, h=None):
 	node, expanded_nodes, food_nodes, tam = best_first_graph_search(problem, lambda n: h(n))
 	return(node, expanded_nodes, food_nodes, tam)
 
+
 def a_star_best_first_search(problem, h=None):
 	"""A* search is an informative searching algorithm with f(n) = h(n) + g(n).
 	You need to specify the h function when you call best_first_search, or else in your Problem subclass"""
 	h = memoize(h or problem.h, 'h')
 	node, expanded_nodes, food_nodes, tam = best_first_graph_search(problem, lambda n: h(n) + n.path_cost)
 	return (node, expanded_nodes, food_nodes, tam)
+
+
+def exp_schedule(k=20, lam=0.005, limit=2000):
+    """One possible schedule function for simulated annealing"""
+    return lambda t: (k * math.exp(-lam * t) if t < limit else 0)
+
+
+def probability(p):
+    rng = np.random.default_rng()
+    a = rng.choice([True, False], p=[p, 1-p])
+    return a
+
+
+def softmin(x):
+    inv_x = [-1 * i for i in x]
+    return np.exp(inv_x) / sum(np.exp(inv_x))
+
+
+def next_choice_selection(nodes, nodes_values):
+    if len(nodes) == 1:
+        return nodes[0]
+
+    rng = np.random.default_rng()
+    p = softmin(nodes_values)
+    
+    a = rng.choice(nodes, p=p)
+    return a
+
+
+def simulated_annealing(problem, problem_value=lambda n: 0, schedule=exp_schedule(), weighted=False, last_visited=False, visited_refresh=2, display=False):
+	"""[Figure 4.5] CAUTION: This differs from the pseudocode as it
+	returns a state instead of a Node."""
+	current = Node(problem.initial)
+	tam = 0
+
+	# This will create an grid with the last time the tile has been visited
+	explored = np.zeros([problem.maze.num_rows, problem.maze.num_cols], dtype=int)
+
+	for t in range(sys.maxsize):
+		tam += 1
+		if last_visited:
+			explored[current.state[0], current.state[1]] = tam
+
+		if problem.goal_test(current.state):
+			if display:
+				print("Done")
+			return current, tam
+
+		T = schedule(t)
+		if T == 0:
+			return current, tam
+		
+		neighbors = current.expand(problem)
+		if last_visited:
+			if len(neighbors) > 1:
+				non_recent_visited = [n for n in neighbors if (tam - explored[n.state[0], n.state[1]] > visited_refresh) or (tam <= visited_refresh)]
+				neighbors = non_recent_visited
+		
+		if not neighbors:
+			return current, tam
+
+		if weighted:
+			next_choice = next_choice_selection(neighbors, [problem_value(n) for n in neighbors])
+		else:	
+			next_choice = random.choice(neighbors)
+
+		delta_e = problem_value(current) - problem_value(next_choice)
+		if delta_e > 0 or probability(math.exp(delta_e / T)):
+			current = next_choice
