@@ -199,6 +199,40 @@ def best_first_graph_search(problem, f, display=False):
 					frontier.append(child)
 	return None, expanded_nodes, food_nodes
 
+def hill_climbing_search(problem, h=None, display=False):
+	"""Hill Climbing search is a local search method that tries to find the best state to search
+	according to an objective function (h). If there is no best state to pursue up to this point
+	(local min/max), the algorithm stops."""
+	expanded_nodes = 0
+	food_nodes = 0
+	h = memoize(h or problem.h, 'h')
+	node = Node(problem.initial)
+	finished = False
+	explored = set()
+	while not finished:
+		if problem.goal_test(node.state):
+			if display:
+				print("Goal found ", len(explored), " paths have been expanded.")
+			return node, expanded_nodes, food_nodes
+		expanded_nodes += 1
+		food_nodes += problem.check_food(node.state)
+		explored.add(node.state)
+
+		next_node = node
+		for child in node.expand(problem):
+			if child.state not in explored and h(child) <= h(next_node):
+				next_node = child
+		
+		if next_node == node:
+			finished = True
+		else:
+			node = next_node
+
+	if display:
+		print("Goal was not found, ", len(explored), " paths have been expanded")
+	return node, expanded_nodes, food_nodes
+
+
 def greedy_best_first_search(problem, h=None):
 	"""Greedy Best-first graph search is an informative searching algorithm with f(n) = h(n).
 	You need to specify the h function when you call best_first_search, or
