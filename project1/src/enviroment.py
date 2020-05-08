@@ -8,7 +8,7 @@ class Position:
 	def __init__(self, position, food=False):
 		self.position = position
 		self.food = food
-
+		self.shockwave_value = -1
 
 class Maze:
 
@@ -18,7 +18,12 @@ class Maze:
 		self.transversable_positions = []
 		self.ghost_positions = []
 
-		self.shockwave_grid = []
+	#	self.shockwave_grid = []
+	def find_transversable_object(self, position):
+		for obj in self.transversable_positions:
+			if obj.position == position:
+				return obj
+		return None
 
 	def get_transversable(self):
 		return [tp.position for tp in self.transversable_positions]
@@ -35,6 +40,21 @@ class Maze:
 
 	def is_allowed(self, position):
 		return position[0] >= 0 and position[0] < self.num_rows and position[1] >= 0 and position[1] < self.num_cols and position in self.get_transversable()
+
+	def get_shockwave_grid(self):
+		#this method is necessary only for plots
+		grid = []
+		for i in range(0, self.num_rows):
+			row = []
+			for j in range(0, self.num_cols):
+				position = self.find_transversable_object((i, j))
+				if position:
+					row.append(position.shockwave_value)
+				else:
+					row.append(-1)
+			grid.append(row)
+
+		return grid
 
 	def get_int_grid(self, initial_position, goal_position):
 		#this method is necessary only for plots
@@ -89,43 +109,32 @@ class Maze:
 
 		return grid, food_x, food_y
 
-
-class ShockWaveMaze(Maze):
-	def __init__(self, num_rows, num_cols):
-		super().__init__(num_rows, num_cols)
-		self.shockwave_grid = []
-	
 	def set_shockwave(self, goal_position):
+		
 		def elem_wise_sum(a, b):
 			return tuple(map(sum, zip(a, b)))
 		
-		# The goal position must be a valid position, if not
-		# generate a 0s grid
-		if goal_position == (-1, -1):
-			grid = np.zeros([self.num_rows, self.num_cols], dtype=int)
-			self.shockwave_grid = grid
+		if goal_position not in self.get_transversable():
 			return
 
-		grid = np.empty([self.num_rows, self.num_cols], dtype=int)
-		grid.fill(-1) 
-		grid[goal_position[0]][goal_position[1]] = 0
+		position = self.find_transversable_object(goal_position)
+		position.shockwave_value = 0
 
-		queue = [goal_position]
+		queue = [position]
 		while len(queue) > 0:
-			i, j = queue[0]
+
 			for action in Actions:
-				neighbor = elem_wise_sum(queue[0], action.value)
+				neighbor = elem_wise_sum(queue[0].position, action.value)
 				
-				# Tunnel addition
 				neighbor = neighbor[0] % self.num_rows, neighbor[1] % self.num_cols
 
-				if (self.is_allowed(neighbor) and grid[neighbor[0]][neighbor[1]] == -1):
-					queue.append(neighbor)
-					grid[neighbor[0]][neighbor[1]] = grid[i][j] + 1
+				if self.is_allowed(neighbor):
+					neighbor_obj = self.find_transversable_object(neighbor)
+					if neighbor_obj.shockwave_value  == -1:
+						queue.append(neighbor_obj)
+						neighbor_obj.shockwave_value = queue[0].shockwave_value + 1
 		
 			queue.pop(0)
-
-		self.shockwave_grid = grid
 
 
 def read_maze(maze_file, num_rows, num_cols, maze_class=Maze):
@@ -152,14 +161,9 @@ def read_maze(maze_file, num_rows, num_cols, maze_class=Maze):
 			
 			k += 1
 		k+=1
-	
-	# If the Maze is the Shockwave Maze, we must set the shockwave grid
-	if maze_class == ShockWaveMaze:
-		maze.set_shockwave(goal_position)
 
 	return maze, initial_position, goal_position
 
 def getMazeTest(maze_arq, num_rows, num_cols, maze_class=Maze):
 	maze_file = open(maze_arq, "r").read()
 	return read_maze(maze_file, num_rows, num_cols, maze_class)
-

@@ -37,19 +37,8 @@ class PacmanProblem(lib.search.Problem):
 		action in the given state. The action must be one of
 		self.actions(state)."""
 		position = tuple(map(sum, zip(state, action.value)))
-		
-		if position[0] < 0 or position[0] >= self.maze.num_rows:
-			x = position[0]%self.maze.num_rows
-		else:
-			x = position[0]
-
-		if position[1] < 0 or position[1] >= self.maze.num_cols:
-			y = position[1]%self.maze.num_cols
-		else:
-			y = position[1]
-
-		return (x, y)
-
+		return (position[0]%self.maze.num_rows, position[1]%self.maze.num_cols)
+	
 	def check_food(self, state):
 		return state in self.maze.get_food()
 
@@ -95,8 +84,8 @@ class PacmanProblem(lib.search.Problem):
 	
 	def h_shockwave(self, node):
 		"""h function is the shockwave distance to the goal."""
-		x1, y1 = node.state
-		return self.maze.shockwave_grid[x1][y1]
+		#x1, y1 = node.state
+		return self.maze.find_transversable_object(node.state).shockwave_value
 
 	def path_cost(self, c, state1, action, state2):
 		"""Return the cost of a solution path that arrives at state2 from
