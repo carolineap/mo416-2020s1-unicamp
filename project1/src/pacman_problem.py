@@ -201,7 +201,7 @@ def hill_climbing_search(problem, h=None, display=False):
 	node = Node(problem.initial)
 	finished = False
 	explored = set()
-	tam = 1
+	tam = 0
 
 	while not finished:
 		if problem.goal_test(node.state):
@@ -215,20 +215,20 @@ def hill_climbing_search(problem, h=None, display=False):
 		next_node = node
 		best = []
 		for child in node.expand(problem):
-			if child.state not in explored:
-				if h(child) < h(next_node):
-					best.clear()
-					next_node = child
-					best.append(child)
-				elif h(child) == h(next_node):
-					best.append(child)
+			if h(child) < h(next_node):
+				best.clear()
+				next_node = child
+				best.append(child)
+			elif h(child) == h(next_node):
+				best.append(child)
 			
+		if tam < len(best):
+			tam = len(best)
 
 		if next_node == node:
 			finished = True
 		else:
 			node = random.choice(best)
-			tam += 1
 
 	if display:
 		print("Goal was not found, ", len(explored), " paths have been expanded")
