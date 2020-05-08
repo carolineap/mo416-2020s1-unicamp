@@ -1,5 +1,6 @@
 from collections import deque
 import math
+import random
 
 # AIMA Libs
 from lib.utils import memoize, PriorityQueue
@@ -212,14 +213,21 @@ def hill_climbing_search(problem, h=None, display=False):
 		explored.add(node.state)
 
 		next_node = node
+		best = []
 		for child in node.expand(problem):
-			if child.state not in explored and h(child) <= h(next_node):
-				next_node = child
-		
+			if child.state not in explored:
+				if h(child) < h(next_node):
+					best.clear()
+					next_node = child
+					best.append(child)
+				elif h(child) == h(next_node):
+					best.append(child)
+			
+
 		if next_node == node:
 			finished = True
 		else:
-			node = next_node
+			node = random.choice(best)
 			tam += 1
 
 	if display:
