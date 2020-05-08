@@ -1,5 +1,6 @@
 from collections import deque
 import math
+import random
 
 # AIMA Libs
 from lib.utils import memoize, PriorityQueue
@@ -178,6 +179,49 @@ def best_first_graph_search(problem, f, display=False):
 			if (new_tam > tam):
 				tam = new_tam
 	return None, expanded_nodes, food_nodes, tam
+
+def hill_climbing_search(problem, h=None, display=False):
+	"""Hill Climbing search is a local search method that tries to find the best state to search
+	according to an objective function (h). If there is no best state to pursue up to this point
+	(local min/max), the algorithm stops."""
+	expanded_nodes = 0
+	food_nodes = 0
+	h = memoize(h or problem.h, 'h')
+	node = Node(problem.initial)
+	finished = False
+	explored = set()
+	tam = 0
+
+	while not finished:
+		if problem.goal_test(node.state):
+			if display:
+				print("Goal found ", len(explored), " paths have been expanded.")
+			return node, expanded_nodes, food_nodes, tam
+		expanded_nodes += 1
+		food_nodes += problem.check_food(node.state)
+		explored.add(node.state)
+
+		next_node = node
+		best = []
+		for child in node.expand(problem):
+			if h(child) < h(next_node):
+				best.clear()
+				next_node = child
+				best.append(child)
+			elif h(child) == h(next_node):
+				best.append(child)
+			
+		if tam < len(best):
+			tam = len(best)
+
+		if next_node == node:
+			finished = True
+		else:
+			node = random.choice(best)
+
+	if display:
+		print("Goal was not found, ", len(explored), " paths have been expanded")
+	return node, expanded_nodes, food_nodes, tam
 
 def greedy_best_first_search(problem, h=None):
 	"""Greedy Best-first graph search is an informative searching algorithm with f(n) = h(n).
