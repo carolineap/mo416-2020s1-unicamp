@@ -277,6 +277,7 @@ def simulated_annealing(problem, problem_value=lambda n: 0, schedule=exp_schedul
 	returns a state instead of a Node."""
 	current = Node(problem.initial)
 	tam = 0
+	food_nodes = 0
 
 	# This will create an grid with the last time the tile has been visited
 	explored = np.zeros([problem.maze.num_rows, problem.maze.num_cols], dtype=int)
@@ -285,15 +286,19 @@ def simulated_annealing(problem, problem_value=lambda n: 0, schedule=exp_schedul
 		tam += 1
 		if last_visited:
 			explored[current.state[0], current.state[1]] = tam
+		
+		if problem.maze.is_food(current.state):
+			food_nodes += 1
 
 		if problem.goal_test(current.state):
 			if display:
 				print("Done")
-			return current, tam
+			return (current, tam, food_nodes, 1)
+			
 
 		T = schedule(t)
 		if T == 0:
-			return current, tam
+			return (current, tam, food_nodes, 1)
 		
 		neighbors = current.expand(problem)
 		if last_visited:
@@ -302,7 +307,7 @@ def simulated_annealing(problem, problem_value=lambda n: 0, schedule=exp_schedul
 				neighbors = non_recent_visited
 		
 		if not neighbors:
-			return current, tam
+			return (current, tam, food_nodes, 1)
 
 		if weighted:
 			next_choice = next_choice_selection(neighbors, [problem_value(n) for n in neighbors])
