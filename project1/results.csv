@@ -1,97 +1,145 @@
-Busca,Tempo,Maximo tam de Nos na memoria,Number of expanded nodes,Number of expanded food nodes,Number of nodes in the path,Number of food nodes in the path
-BFS,0.08986449241638184,17,231,171,33,29
-DFS,0.09367775917053223,25,205,138,111,62
-Greedy Search - Manhattan Distance,0.029842376708984375,14,60,55,53,49
-A* Search - Manhattan Distance,0.07671093940734863,18,159,152,45,43
-Greedy Search - Ghost Avoidance Heuristic with Euclidean Distanc,0.10814237594604492,18,267,196,45,23
-A* Search - Ghost Avoidance Heuristic with Euclidean Distance,0.10547399520874023,17,163,152,49,47
-A* Search - Shockwave Heuristic,0.08179330825805664,18,160,152,45,43
-Greedy Search - Shockwave Heuristic,0.013855934143066406,10,32,29,33,29
-BFS,0.0746383666992187,18,271,192,37,30
-DFS,0.05189156532287598,31,150,106,109,78
-Greedy Search - Manhattan Distance,0.03488755226135254,15,73,49,59,42
-A* Search - Manhattan Distance,0.03878283500671387,28,105,105,51,51
-Greedy Search - Ghost Avoidance Heuristic with Euclidean Distanc,0.4525322914123535,18,95,89,57,57
-A* Search - Ghost Avoidance Heuristic with Euclidean Distance,0.04224729537963867,20,96,96,57,57
-A* Search - Shockwave Heuristic,0.04658937454223633,25,108,108,51,51
-Greedy Search - Shockwave Heuristic,0.018621444702148438,15,36,29,37,30
-BFS,0.12565112113952637,20,342,248,41,40
-DFS,0.06339263916015625,33,155,104,139,89
-Greedy Search - Manhattan Distance,0.021129369735717773,22,46,23,47,24
-A* Search - Manhattan Distance,0.029712200164794922,24,65,65,43,43
-Greedy Search - Ghost Avoidance Heuristic with Euclidean Distanc,0.07571125030517578,24,107,70,69,42
-A* Search - Ghost Avoidance Heuristic with Euclidean Distance,0.028781652450561523,25,91,90,43,43
-A* Search - Shockwave Heuristic,0.02139878273010254,23,45,45,43,43
-Greedy Search - Shockwave Heuristic,0.023578643798828125,21,40,28,41,29
-BFS,0.8833661079406738,17,1006,753,107,60
-DFS,0.677107572555542,111,740,568,275,213
-Greedy Search - Manhattan Distance,0.13086581230163574,29,117,96,109,90
-A* Search - Manhattan Distance,0.7239394187927246,64,773,722,151,150
-Greedy Search - Ghost Avoidance Heuristic with Euclidean Distanc,0.10870242118835449,37,130,76,129,75
-A* Search - Ghost Avoidance Heuristic with Euclidean Distance,0.6857261657714844,67,745,706,179,178
-A* Search - Shockwave Heuristic,0.8525228500366211,63,767,722,151,150
-Greedy Search - Shockwave Heuristic,0.1308736801147461,32,106,59,107,60
-BFS,0.8092443943023682,25,1046,789,109,82
-DFS,0.5957746505737305,88,636,445,337,247
-Greedy Search - Manhattan Distance,0.20597314834594727,37,181,130,139,107
-A* Search - Manhattan Distance,0.6375727653503418,52,661,614,109,107
-Greedy Search - Ghost Avoidance Heuristic with Euclidean Distanc,0.42895054817199707,43,453,317,167,117
-A* Search - Ghost Avoidance Heuristic with Euclidean Distance,0.6079120635986328,60,696,636,147,145
-A* Search - Shockwave Heuristic,0.7094361782073975,52,661,614,109,107
-Greedy Search - Shockwave Heuristic,0.10086941719055176,40,108,81,109,82
-BFS,0.6381165981292725,25,822,625,68,55
-DFS,0.5994749069213867,114,758,583,314,223
-Greedy Search - Manhattan Distance,0.08367180824279785,28,90,69,72,54
-A* Search - Manhattan Distance,0.14327430725097656,28,179,179,72,72
-Greedy Search - Ghost Avoidance Heuristic with Euclidean Distanc,0.7567601203918457,43,957,739,152,115
-A* Search - Ghost Avoidance Heuristic with Euclidean Distance,0.4586803913116455,58,580,580,112,112
-A* Search - Shockwave Heuristic,0.08780336380004883,24,98,98,72,72
-Greedy Search - Shockwave Heuristic,0.07066202163696289,32,67,46,68,47
-BFS,4.47493839263916,49,2146,1636,99,80
-DFS,4.290004730224609,302,1911,1441,887,699
-Greedy Search - Manhattan Distance,0.5223245620727539,53,255,194,153,127
-A* Search - Manhattan Distance,5.551314830780029,143,2484,2045,107,100
-Greedy Search - Ghost Avoidance Heuristic with Euclidean Distanc,1.822448492050171,63,846,552,153,75
-A* Search - Ghost Avoidance Heuristic with Euclidean Distance,5.2985899448394775,142,2501,2047,205,198
-A* Search - Shockwave Heuristic,5.983832836151123,139,2474,2043,107,100
-Greedy Search - Shockwave Heuristic,0.28295087814331055,62,98,85,99,86
-BFS,4.1649088859558105,60,2027,1544,79,29
-DFS,2.962261199951172,318,1370,1028,957,748
-Greedy Search - Manhattan Distance,0.4067573547363281,76,195,142,173,140
-A* Search - Manhattan Distance,2.6095328330993652,118,1265,1249,185,184
-Greedy Search - Ghost Avoidance Heuristic with Euclidean Distanc,5.773325681686401,136,2778,2116,103,71
-A* Search - Ghost Avoidance Heuristic with Euclidean Distance,3.8956186771392822,149,1851,1730,247,246
-A* Search - Shockwave Heuristic,3.554490804672241,143,1475,1459,185,184
-Greedy Search - Shockwave Heuristic,0.20341753959655762,54,78,23,79,24
-BFS,0.9797918796539307,33,421,274,30,14
-DFS,1.1181063652038574,78,532,429,292,221
-Greedy Search - Manhattan Distance,0.10564494132995605,22,39,11,30,11
-A* Search - Manhattan Distance,6.123755931854248,143,2834,2183,174,163
-Greedy Search - Ghost Avoidance Heuristic with Euclidean Distanc,0.11400628089904785,21,38,11,30,11
-A* Search - Ghost Avoidance Heuristic with Euclidean Distance,6.1172566413879395,167,2838,2183,188,177
-A* Search - Shockwave Heuristic,7.003463506698608,150,2832,2183,174,163
-Greedy Search - Shockwave Heuristic,0.0840146541595459,20,29,14,30,14
-BFS,23.30416989326477,81,5632,4311,268,173
-DFS,7.855841875076294,590,1957,1520,1310,1033
-Greedy Search - Manhattan Distance,12.194956064224243,170,2939,2249,520,349
-A* Search - Manhattan Distance,20.82264542579651,318,5327,4209,358,351
-Greedy Search - Ghost Avoidance Heuristic with Euclidean Distanc,16.393186569213867,231,4166,3179,540,403
-A* Search - Ghost Avoidance Heuristic with Euclidean Distance,22.8633713722229,350,5358,4247,500,493
-A* Search - Shockwave Heuristic,23.99528408050537,352,5237,4170,358,351
-Greedy Search - Shockwave Heuristic,1.1294567584991455,118,267,161,268,162
-BFS,15.444770574569702,82,3724,2868,104,94
-DFS,17.847671508789062,662,4414,3432,840,678
-Greedy Search - Manhattan Distance,0.7730345726013184,59,172,120,144,98
-A* Search - Manhattan Distance,5.742663145065308,183,1403,1389,104,103
-Greedy Search - Ghost Avoidance Heuristic with Euclidean Distanc,4.944507598876953,84,1137,829,150,106
-A* Search - Ghost Avoidance Heuristic with Euclidean Distance,2.868356704711914,98,687,659,112,111
-A* Search - Shockwave Heuristic,8.254660844802856,194,1409,1386,104,103
-Greedy Search - Shockwave Heuristic,0.5328526496887207,52,103,85,104,86
-BFS,9.335270404815674,58,2527,1997,87,69
-DFS,10.235167980194092,591,2655,2021,1143,838
-Greedy Search - Manhattan Distance,0.6500372886657715,56,156,76,133,71
-A* Search - Manhattan Distance,24.60542368888855,269,4755,4081,147,143
-Greedy Search - Ghost Avoidance Heuristic with Euclidean Distanc,23.410686254501343,225,5633,4314,511,392
-A* Search - Ghost Avoidance Heuristic with Euclidean Distance,21.43228244781494,292,5044,4099,183,179
-A* Search - Shockwave Heuristic,26.708362579345703,259,4756,4081,147,143
-Greedy Search - Shockwave Heuristic,0.4206709861755371,45,86,68,87,69
+Busca,Tempo,Máximo de nós simultâneos na memória,Número de nós expandidos,Número de nós comida expandidos,Número de nós no caminho,Número de nós comida no caminho,Goal
+BFS,0.08986449241638184,17,231,171,33,29,1
+DFS,0.09367775917053223,25,205,138,111,62,1
+Greedy Search - Manhattan,0.029842376708984375,14,60,55,53,49,1
+A* Search - Manhattan,0.07671093940734863,18,159,152,45,43,1
+Greedy Search - Ghost Avoidance Euclidean,0.10814237594604492,18,267,196,45,23,1
+A* Search - Ghost Avoidance Euclidean,0.10547399520874023,17,163,152,49,47,1
+A* Search - Shockwave Heuristic,0.08179330825805664,18,160,152,45,43,1
+Greedy Search - Shockwave Heuristic,0.013855934143066406,10,32,29,33,29,1
+Hill-Climbing  - Manhattan,0.0026886463165283203,2,4,4,4,4,0
+Hill-Climbing  - Ghost Avoidance Euclidean,0.0070726871490478516,1,4,4,4,4,0
+Hill-Climbing  - Shockwave,0.011918067932128906,1,32,29,33,29,1
+Simulated Annealing  - Shockwave,0.1728222370147705,1,474,443,441,412,1
+BFS,0.0746383666992187,18,271,192,37,30,1
+DFS,0.05189156532287598,31,150,106,109,78,1
+Greedy Search - Manhattan,0.03488755226135254,15,73,49,59,42,1
+A* Search - Manhattan,0.03878283500671387,28,105,105,51,51,1
+Greedy Search - Ghost Avoidance Euclidean,0.4525322914123535,18,95,89,57,57,1
+A* Search - Ghost Avoidance Euclidean,0.04224729537963867,20,96,96,57,57,1
+A* Search - Shockwave Heuristic,0.04658937454223633,25,108,108,51,51,1
+Greedy Search - Shockwave Heuristic,0.018621444702148438,15,36,29,37,30,1
+Hill-Climbing  - Manhattan,0.06244087219238281,2,33,19,33,19,0
+Hill-Climbing  - Ghost Avoidance Euclidean,0.001073598861694336,1,3,3,3,3,0
+Hill-Climbing  - Shockwave,0.004603385925292969,2,1,1,1,1,1
+Simulated Annealing  - Shockwave,0.6946358680725098,1,2001,1989,602,591,1
+BFS,0.12565112113952637,20,342,248,41,40,1
+DFS,0.06339263916015625,33,155,104,139,89,1
+Greedy Search - Manhattan,0.021129369735717773,22,46,23,47,24,1
+A* Search - Manhattan,0.029712200164794922,24,65,65,43,43,1
+Greedy Search - Ghost Avoidance Euclidean,0.07571125030517578,24,107,70,69,42,1
+A* Search - Ghost Avoidance Euclidean,0.028781652450561523,25,91,90,43,43,1
+A* Search - Shockwave Heuristic,0.02139878273010254,23,45,45,43,43,1
+Greedy Search - Shockwave Heuristic,0.023578643798828125,21,40,28,41,29,1
+Hill-Climbing  - Manhattan,0.05942201614379883,2,40,28,41,29,1
+Hill-Climbing  - Ghost Avoidance Euclidean,0.005715131759643555,1,2,2,2,2,0
+Hill-Climbing  - Shockwave,0.027202606201171875,2,40,28,41,29,1
+Simulated Annealing  - Shockwave,0.24914073944091797,1,515,373,453,331,1
+BFS,0.8833661079406738,17,1006,753,107,60,1
+DFS,0.677107572555542,111,740,568,275,213,1
+Greedy Search - Manhattan,0.13086581230163574,29,117,96,109,90,1
+A* Search - Manhattan,0.7239394187927246,64,773,722,151,150,1
+Greedy Search - Ghost Avoidance Euclidean,0.10870242118835449,37,130,76,129,75,1
+A* Search - Ghost Avoidance Euclidean,0.6857261657714844,67,745,706,179,178,1
+A* Search - Shockwave Heuristic,0.8525228500366211,63,767,722,151,150,1
+Greedy Search - Shockwave Heuristic,0.1308736801147461,32,106,59,107,60,1
+Hill-Climbing  - Manhattan,0.058496952056884766,2,6,6,6,6,0
+Hill-Climbing  - Ghost Avoidance Euclidean,0.005640506744384766,1,6,6,6,6,0
+Hill-Climbing  - Shockwave,0.1203608512878418,2,106,59,107,60,1
+Simulated Annealing  - Shockwave,1.689298152923584,1,2001,219,566,205,0
+BFS,0.8092443943023682,25,1046,789,109,82,1
+DFS,0.5957746505737305,88,636,445,337,247,1
+Greedy Search - Manhattan,0.20597314834594727,37,181,130,139,107,1
+A* Search - Manhattan,0.6375727653503418,52,661,614,109,107,1
+Greedy Search - Ghost Avoidance Euclidean,0.42895054817199707,43,453,317,167,117,1
+A* Search - Ghost Avoidance Euclidean,0.6079120635986328,60,696,636,147,145,1
+A* Search - Shockwave Heuristic,0.7094361782073975,52,661,614,109,107,1
+Greedy Search - Shockwave Heuristic,0.10086941719055176,40,108,81,109,82,1
+Hill-Climbing  - Manhattan,0.08226704597473145,2,20,16,20,16,0
+Hill-Climbing  - Ghost Avoidance Euclidean,0.011640310287475586,1,11,11,11,11,0
+Hill-Climbing  - Shockwave,0.11661386489868164,2,108,79,109,80,1
+Simulated Annealing  - Shockwave,1.4615888595581055,1,2001,567,620,457,1
+BFS,0.6381165981292725,25,822,625,68,55,1
+DFS,0.5994749069213867,114,758,583,314,223,1
+Greedy Search - Manhattan,0.08367180824279785,28,90,69,72,54,1
+A* Search - Manhattan,0.14327430725097656,28,179,179,72,72,1
+Greedy Search - Ghost Avoidance Euclidean,0.7567601203918457,43,957,739,152,115,1
+A* Search - Ghost Avoidance Euclidean,0.4586803913116455,58,580,580,112,112,1
+A* Search - Shockwave Heuristic,0.08780336380004883,24,98,98,72,72,1
+Greedy Search - Shockwave Heuristic,0.07066202163696289,32,67,46,68,47,1
+Hill-Climbing  - Manhattan,0.05475163459777832,2,13,8,13,8,0
+Hill-Climbing  - Ghost Avoidance Euclidean,0.010689735412597656,1,8,8,8,8,0
+Hill-Climbing  - Shockwave,0.07695508003234863,2,67,46,68,47,1
+Simulated Annealing  - Shockwave,1.6289045810699463,1,2001,1917,566,487,1
+BFS,4.47493839263916,49,2146,1636,99,80,1
+DFS,4.290004730224609,302,1911,1441,887,699,1
+Greedy Search - Manhattan,0.5223245620727539,53,255,194,153,127,1
+A* Search - Manhattan,5.551314830780029,143,2484,2045,107,100,1
+Greedy Search - Ghost Avoidance Euclidean,1.822448492050171,63,846,552,153,75,1
+A* Search - Ghost Avoidance Euclidean,5.2985899448394775,142,2501,2047,205,198,1
+A* Search - Shockwave Heuristic,5.983832836151123,139,2474,2043,107,100,1
+Greedy Search - Shockwave Heuristic,0.28295087814331055,62,98,85,99,86,1
+Hill-Climbing  - Manhattan,0.09795570373535156,2,13,13,13,13,0
+Hill-Climbing  - Ghost Avoidance Euclidean,0.03368854522705078,1,7,7,7,7,0
+Hill-Climbing  - Shockwave,0.278458833694458,2,98,81,99,82,1
+Simulated Annealing  - Shockwave,4.2448201179504395,1,2001,1962,610,573,1
+BFS,4.1649088859558105,60,2027,1544,79,29,1
+DFS,2.962261199951172,318,1370,1028,957,748,1
+Greedy Search - Manhattan,0.4067573547363281,76,195,142,173,140,1
+A* Search - Manhattan,2.6095328330993652,118,1265,1249,185,184,1
+Greedy Search - Ghost Avoidance Euclidean,5.773325681686401,136,2778,2116,103,71,1
+A* Search - Ghost Avoidance Euclidean,3.8956186771392822,149,1851,1730,247,246,1
+A* Search - Shockwave Heuristic,3.554490804672241,143,1475,1459,185,184,1
+Greedy Search - Shockwave Heuristic,0.20341753959655762,54,78,23,79,24,1
+Hill-Climbing  - Manhattan,0.06261968612670898,2,6,6,6,6,0
+Hill-Climbing  - Ghost Avoidance Euclidean,0.03820991516113281,1,9,9,9,9,0
+Hill-Climbing  - Shockwave,0.3658299446105957,2,158,136,159,137,1
+Simulated Annealing  - Shockwave,4.107773780822754,1,2001,1861,660,550,1
+BFS,0.9797918796539307,33,421,274,30,14,1
+DFS,1.1181063652038574,78,532,429,292,221,1
+Greedy Search - Manhattan,0.10564494132995605,22,39,11,30,11,1
+A* Search - Manhattan,6.123755931854248,143,2834,2183,174,163,1
+Greedy Search - Ghost Avoidance Euclidean,0.11400628089904785,21,38,11,30,11,1
+A* Search - Ghost Avoidance Euclidean,6.1172566413879395,167,2838,2183,188,177,1
+A* Search - Shockwave Heuristic,7.003463506698608,150,2832,2183,174,163,1
+Greedy Search - Shockwave Heuristic,0.0840146541595459,20,29,14,30,14,1
+Hill-Climbing  - Manhattan,0.03913688659667969,1,2,1,2,1,0
+Hill-Climbing  - Ghost Avoidance Euclidean,0.007359743118286133,1,2,1,2,1,0
+Hill-Climbing  - Shockwave,0.1237344741821289,2,29,11,30,11,1
+Simulated Annealing  - Shockwave,1.070941686630249,1,459,283,396,260,1
+BFS,23.30416989326477,81,5632,4311,268,173,1
+DFS,7.855841875076294,590,1957,1520,1310,1033,1
+Greedy Search - Manhattan,12.194956064224243,170,2939,2249,520,349,1
+A* Search - Manhattan,20.82264542579651,318,5327,4209,358,351,1
+Greedy Search - Ghost Avoidance Euclidean,16.393186569213867,231,4166,3179,540,403,1
+A* Search - Ghost Avoidance Euclidean,22.8633713722229,350,5358,4247,500,493,1
+A* Search - Shockwave Heuristic,23.99528408050537,352,5237,4170,358,351,1
+Greedy Search - Shockwave Heuristic,1.1294567584991455,118,267,161,268,162,1
+Hill-Climbing  - Manhattan,0.3169984817504883,2,54,46,54,46,0
+Hill-Climbing  - Ghost Avoidance Euclidean,0.05075979232788086,1,5,5,5,5,0
+Hill-Climbing  - Shockwave,1.0545399188995361,2,267,172,268,173,1
+Simulated Annealing  - Shockwave,8.15596079826355,1,2001,1880,635,542,0
+BFS,15.444770574569702,82,3724,2868,104,94,1
+DFS,17.847671508789062,662,4414,3432,840,678,1
+Greedy Search - Manhattan,0.7730345726013184,59,172,120,144,98,1
+A* Search - Manhattan,5.742663145065308,183,1403,1389,104,103,1
+Greedy Search - Ghost Avoidance Euclidean,4.944507598876953,84,1137,829,150,106,1
+A* Search - Ghost Avoidance Euclidean,2.868356704711914,98,687,659,112,111,1
+A* Search - Shockwave Heuristic,8.254660844802856,194,1409,1386,104,103,1
+Greedy Search - Shockwave Heuristic,0.5328526496887207,52,103,85,104,86,1
+Hill-Climbing  - Manhattan,0.14313817024230957,2,19,19,19,19,0
+Hill-Climbing  - Ghost Avoidance Euclidean,0.18373703956604004,1,34,21,34,21,0
+Hill-Climbing  - Shockwave,0.6427896022796631,2,103,85,104,86,1
+Simulated Annealing  - Shockwave,9.200192213058472,1,2001,1849,599,481,0
+BFS,9.335270404815674,58,2527,1997,87,69,1
+DFS,10.235167980194092,591,2655,2021,1143,838,1
+Greedy Search - Manhattan,0.6500372886657715,56,156,76,133,71,1
+A* Search - Manhattan,24.60542368888855,269,4755,4081,147,143,1
+Greedy Search - Ghost Avoidance Euclidean,23.410686254501343,225,5633,4314,511,392,1
+A* Search - Ghost Avoidance Euclidean,21.43228244781494,292,5044,4099,183,179,1
+A* Search - Shockwave Heuristic,26.708362579345703,259,4756,4081,147,143,1
+Greedy Search - Shockwave Heuristic,0.4206709861755371,45,86,68,87,69,1
+Hill-Climbing  - Manhattan,0.10096335411071777,2,9,9,9,9,0
+Hill-Climbing  - Ghost Avoidance Euclidean,0.047064781188964844,1,9,9,9,9,0
+Hill-Climbing  - Shockwave,0.3907351493835449,2,86,68,87,69,1
+Simulated Annealing  - Shockwave,6.493274927139282,1,2001,1956,609,569,0
