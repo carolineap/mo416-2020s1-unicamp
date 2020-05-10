@@ -16,6 +16,8 @@ cost, completeness, optimality. Your are required to clearly define:
 
 ## Project 1 - Repository Structure
 
+The [Figures](https://github.com/gabrielpreviato/mo416-2020s1-unicamp/tree/master/project1/Figures) directory contains the images with the paths that the search algorithms had found.
+
 The [Mazes](https://github.com/gabrielpreviato/mo416-2020s1-unicamp/tree/master/project1/Mazes) directory contains the txt files representing the Pacman maze.
 In these mazes files, a vertical bar (|) represents a wall, a space ( ) represents a path and a dot (.) represents a path with food.
 
