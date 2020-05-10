@@ -85,10 +85,10 @@ class PacmanProblem(lib.search.Problem):
 
 		return goal_dist + ghost_proximity
 	
-	def h_shockwave(self, node):
-		"""h function is the shockwave distance to the goal."""
+	def h_wavefront(self, node):
+		"""h function is the wavefront distance to the goal."""
 		#x1, y1 = node.state
-		return self.maze.find_transversable_object(node.state).shockwave_value
+		return self.maze.find_transversable_object(node.state).wavefront_value
 
 	def path_cost(self, c, state1, action, state2):
 		"""Return the cost of a solution path that arrives at state2 from

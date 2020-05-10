@@ -8,7 +8,7 @@ class Position:
 	def __init__(self, position, food=False):
 		self.position = position
 		self.food = food
-		self.shockwave_value = -1
+		self.wavefront_value = -1
 
 class Maze:
 
@@ -18,7 +18,7 @@ class Maze:
 		self.transversable_positions = []
 		self.ghost_positions = []
 
-	#	self.shockwave_grid = []
+	#	self.wavefront_grid = []
 	def find_transversable_object(self, position):
 		for obj in self.transversable_positions:
 			if obj.position == position:
@@ -41,7 +41,7 @@ class Maze:
 	def is_allowed(self, position):
 		return position[0] >= 0 and position[0] < self.num_rows and position[1] >= 0 and position[1] < self.num_cols and position in self.get_transversable()
 
-	def get_shockwave_grid(self):
+	def get_wavefront_grid(self):
 		#this method is necessary only for plots
 		grid = []
 		for i in range(0, self.num_rows):
@@ -49,7 +49,7 @@ class Maze:
 			for j in range(0, self.num_cols):
 				position = self.find_transversable_object((i, j))
 				if position:
-					row.append(position.shockwave_value)
+					row.append(position.wavefront_value)
 				else:
 					row.append(-1)
 			grid.append(row)
@@ -109,7 +109,7 @@ class Maze:
 
 		return grid, food_x, food_y
 
-	def set_shockwave(self, goal_position):
+	def set_wavefront(self, goal_position):
 		
 		def elem_wise_sum(a, b):
 			return tuple(map(sum, zip(a, b)))
@@ -118,7 +118,7 @@ class Maze:
 			return
 
 		position = self.find_transversable_object(goal_position)
-		position.shockwave_value = 0
+		position.wavefront_value = 0
 
 		queue = [position]
 		while len(queue) > 0:
@@ -130,9 +130,9 @@ class Maze:
 
 				if self.is_allowed(neighbor):
 					neighbor_obj = self.find_transversable_object(neighbor)
-					if neighbor_obj.shockwave_value  == -1:
+					if neighbor_obj.wavefront_value  == -1:
 						queue.append(neighbor_obj)
-						neighbor_obj.shockwave_value = queue[0].shockwave_value + 1
+						neighbor_obj.wavefront_value = queue[0].wavefront_value + 1
 		
 			queue.pop(0)
 
