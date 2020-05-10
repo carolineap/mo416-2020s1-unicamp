@@ -28,3 +28,11 @@ The [src](https://github.com/gabrielpreviato/mo416-2020s1-unicamp/tree/master/pr
 The [pacman](https://github.com/gabrielpreviato/mo416-2020s1-unicamp/tree/master/project1/pacman.ipynb) is the Jupyter Notebook used for evaluating the search algorithms, all data collected was then compiled in the [results](https://github.com/gabrielpreviato/mo416-2020s1-unicamp/tree/master/project1/results.csv) file.
 
 The [analysis](https://github.com/gabrielpreviato/mo416-2020s1-unicamp/tree/master/project1/analysis.ipynb) is the Jupyter Notebook with the problem description, discussion and analysis over the search methods in the Pacman enviroment.
+
+## Project 1 - Division of Tasks
+Caroline Silva contributed with the base code structure, the DFS, BFS and Greedy search algorithms, Manhattan Heuristic and graphical visualization.
+Gabriel Previato contributed with the A* search, the Wavefront Heuristic and the Simulated Annealing.
+Thales Oliveira contributed with the A* search, the Ghost Avoidance Heuristic and Hill-Climbing.
+Letícia Berto contributed with the Mazes creation, experiments executions, graphical visualization and the solution video.
+
+All of the above mentioned contributed in the analysis and final report.
