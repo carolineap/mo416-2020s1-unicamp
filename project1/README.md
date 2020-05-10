@@ -31,8 +31,11 @@ The [analysis](https://github.com/gabrielpreviato/mo416-2020s1-unicamp/tree/mast
 
 ## Project 1 - Division of Tasks
 Caroline Silva contributed with the base code structure, the DFS, BFS and Greedy search algorithms, Manhattan Heuristic and graphical visualization.
+
 Gabriel Previato contributed with the A* search, the Wavefront Heuristic and the Simulated Annealing.
+
 Thales Oliveira contributed with the A* search, the Ghost Avoidance Heuristic and Hill-Climbing.
+
 Letícia Berto contributed with the Mazes creation, experiments executions, graphical visualization and the solution video.
 
 All of the above mentioned contributed in the analysis and final report.
