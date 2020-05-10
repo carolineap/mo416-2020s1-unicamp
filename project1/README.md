@@ -14,6 +14,9 @@ cost, completeness, optimality. Your are required to clearly define:
 - How the problem was modeled
 - Implementation specifics and restrictions
 
+## Project 1 - Solution Video
+The solution video can be found at: https://www.youtube.com/watch?v=wTpuToSd8rc
+
 ## Project 1 - Repository Structure
 
 The [Figure](https://github.com/gabrielpreviato/mo416-2020s1-unicamp/tree/master/project1/Figure) directory contains the images with the paths that the search algorithms had found.
